@@ -1,4 +1,4 @@
-clear, clc;
+clear, close all, clc;
 
 % 1) Grabamos señal
 t = 4; Fs = 11025; Ch = 1; nBits = 16;
@@ -11,7 +11,7 @@ segmentos = segmentacion(grab, num_muestras, despl);
 num_segmentos_ruido = 10;
 segmentos_palabra = inicio_fin(segmentos, num_segmentos_ruido);
 palabra = inv_segmentacion(segmentos_palabra, despl);
-figure, plot(palabra);
+plot(palabra);
 
 % 3) Preenfasis
 palabra = preenfasis(palabra, 0.95);
