@@ -1,4 +1,4 @@
-function reconocedorOP(carac)
+function sol = reconocedorOP(carac)
     load SUMA.mat
     load RESTA.mat
     load PRODUCTO.mat
@@ -13,12 +13,17 @@ function reconocedorOP(carac)
     [~, ind] = min(diferencias);
     switch ind
         case 1
-            disp('La palabra dicha es SUMA');
+%             disp('La palabra dicha es SUMA');
+            sol = '+';
         case 2
-            disp('La palabra dicha es RESTA');
+%             disp('La palabra dicha es RESTA');
+            sol = '-';
         case 3
-            disp('La palabra dicha es PRODUCTO');
+%             disp('La palabra dicha es PRODUCTO');
+            sol = '*';
         case 4
-            disp('La palabra dicha es COCIENTE');
+%             disp('La palabra dicha es COCIENTE');
+            sol = '/';
     end
+    
 end
