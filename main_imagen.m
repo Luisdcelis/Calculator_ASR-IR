@@ -1,28 +1,27 @@
-clc; close all; clear;
+function num = main_imagen()
+    % Obtenemos información de las cámaras conectadas a nuestro PC (toolbox de procesamiento de imágenes)
+    vidInfo = imaqhwinfo;
+    % Iniciamos el objeto cámara
+    vid 	= videoinput('winvideo', 1);
+    % Abrimos el video en preview
+    preview(vid);
 
-% Obtenemos información de las cámaras conectadas a nuestro PC (toolbox de procesamiento de imágenes)
-vidInfo = imaqhwinfo;
-% Iniciamos el objeto cámara
-vid 	= videoinput('winvideo', 1);
-% Abrimos el video en preview
-preview(vid);
-
-% El usuario puede elegir si tomar una imagen o cargarla
-message = '¿Le gustaría tomar una imagen?';
-reply   = questdlg(message, 'Tomar imagen', 'Si', 'No', 'Si');
-if strcmpi(reply, 'Si')
-    % Tomamos una foto
-    imgFromCam = getsnapshot(vid);
-    I = imgFromCam;
-else
-    % Cargamos la imagen
-    [filename, pathname] = ...
-     uigetfile({'*.jpg';'*.png';'*.PNG';'*.tif';'*.*'},'Selecciona una imagen...');
-    fullFileName = fullfile(pathname, filename);
-    I = imread(fullFileName);
-end
-% Eliminamos el objeto cámara
-delete(vid)
+    % El usuario puede elegir si tomar una imagen o cargarla
+    message = '¿Le gustaría tomar una imagen?';
+    reply   = questdlg(message, 'Tomar imagen', 'Si', 'No', 'Si');
+    if strcmpi(reply, 'Si')
+        % Tomamos una foto
+        imgFromCam = getsnapshot(vid);
+        I = imgFromCam;
+    else
+        % Cargamos la imagen
+        [filename, pathname] = ...
+         uigetfile({'*.*';'*.png';'*.PNG';'*.jpg';'*.tif'},'Selecciona una imagen...');
+        fullFileName = fullfile(pathname, filename);
+        I = imread(fullFileName);
+    end
+    % Eliminamos el objeto cámara
+    delete(vid)
 
 
 % for i=0:10
@@ -71,22 +70,19 @@ delete(vid)
     % Rellenamos los pequeños huecos que nos hayan quedado
     BW = imfill(BW, 'holes');
     % Eliminamos las áreas pequeñas de la imagen
-    BW = bwareaopen(BW,900);  	% 900 para las imágenes de pruebav2
+    BW = bwareaopen(BW, 900);  	% 900 para las imágenes de pruebav2
 
-    se = strel('square',70);    % 100 para las imágenes de pruebav2
+    se = strel('square',100);    % 100 para las imágenes de pruebav2
     % A continuación pasamos a eliminar la palma, para poder quedarnos
     % posteriormente con los dedos y pasar a contarlos
     % 1- Los dedos son más pequeños que la palma por lo tanto podemos
     % "eliminarlos" aplicando erosión
     BW2 = imerode(BW, se);
-    figure, imshow(BW2);
     % 2- "Reconstruimos la palma" (o un poco más grande), aplicando dilatación
     BW2 = imdilate(BW2,se);
-    figure, imshow(BW2);
     % Si eliminamos la palma anterior a la imagen original obtenedremos
     % solamente los dedos y tal vez algo de ruido
     BW3 = imsubtract(BW, BW2);
-    figure, imshow(BW3);
     % Pasamos a eliminar el ruido
     BW3 = bwareaopen(BW3, 9000);     % 9000 para las imágenes de prueba
     BW = BW3;
@@ -108,11 +104,11 @@ delete(vid)
         fprintf(1,'#%2d %16.1f\n',k,st(k).Area);
     end
 
-    %Sort the areas
+    % Ordenamos las áreas
     allAreas = [st.Area];
     [sortedAreas, sortingIndexes] = sort(allAreas, 'descend');
 
-    %Count the areas and label them on the binary image
+    % Contamos las areas y las etiquetamos en la imagen binaria
     for k = 1 : length(st)
         centerX = st(sortingIndexes(k)).Centroid(1);
         centerY = st(sortingIndexes(k)).Centroid(2);
@@ -120,8 +116,15 @@ delete(vid)
     end
 
 
-    %Now we can detect what is on the picture
-    title(length(sortingIndexes))
-%     close all;
+    % Ahora detectamos qué hay en la imagen
+    if length(st) > 10 
+        num = 10;
+    else
+        num = length(st);
+    end
 
-% end
+    % close all;
+
+    % end
+    
+end

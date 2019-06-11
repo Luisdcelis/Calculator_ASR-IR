@@ -1,105 +1,100 @@
-function [inicio, fin] = inicio_fin(senyal)
-%EJERCICIO 2
-a = 0.95;
-num_muestras = 15;
-despl = 5;
-senyal = preenfasis(senyal , a);
+function segmentos = inicio_fin (segmentos, num_segmentos_ruido)
+    M = magnitud(segmentos);
+    Z = cruces_por_cero(segmentos);
 
-segmentos = segmentacion(senyal, num_muestras, despl);
-segmentos_enventanados = enventanado(segmentos, 'hamming');
-E = energia(segmentos_enventanados);
-M = magnitud(segmentos_enventanados);
-Z = cruces_por_cero(segmentos_enventanados);
-% mProm          = magnitudPromedio(segmentos_enventanados);
-Ms             = M(1:10);
-Zs             = Z(1:10);
+    % Calculamos el principio de la palabra.
 
-UmbSupEnrg     = 0.5*max(M);
-UmbInfEnrg     = mean(Ms) + 2*std(Ms);
-UmbCruCero     = mean(Zs) + 2*std(Zs);
+    Ms = M(:,1:num_segmentos_ruido);
+    Zs = Z(:,1:num_segmentos_ruido);
 
-In = -1;
-i = 11;
-while (In == -1 && i<length(M))
-if mProm(i) > UmbSupEnrg
-    In = i;
-end
-i = i + 1;  
-end
-i = In;
-Ie = -1;
-while (Ie == -1 && i>0)
-    if mProm(i) < UmbInfEnrg
-    Ie = i;
+    UmbSupEnrg = 0.5*max(M);
+
+    UmbInfEnrg = mean2(Ms) + 2*std2(Ms);
+
+    UmbCruCero = mean2(Zs) + 2*std2(Zs);
+
+    n = num_segmentos_ruido+1;
+
+    while ~(M(n) > UmbSupEnrg)
+        n = n+1;
+    end
+    ln = n;
+
+    while ~(M(n) < UmbInfEnrg)
+        n = n-1;
+    end
+    le = n;
+
+    ruido = 0;
+    lz = 0;
+    for n = le:-1:le-25
+        if Z(n) > UmbCruCero
+            ruido = ruido + 1;
+            if ruido == 3
+                while Z(n) > UmbCruCero
+                    n = n+1;
+                end
+                lz = n;
+            end
+        else
+            ruido = 0;
+        end
+    end
+
+
+    % Calculamos el fin de la palabra.
+
+    Ms = M(:,(end - num_segmentos_ruido):end);
+    Zs = Z(:,(end - num_segmentos_ruido):end);
+
+    UmbSupEnrg = 0.5*max(max(M));
+
+    UmbInfEnrg = mean2(Ms) + 2*std2(Ms);
+
+    UmbCruCero = mean2(Zs) + 2*std2(Zs);
+
+    n = (size(M,2)-(num_segmentos_ruido-1));
+
+    while ~(M(n) > UmbSupEnrg)
+        n = n-1;
+    end
+    fn = n;
+
+    while ~(M(n) <= UmbInfEnrg)
+        n = n+1;
+    end
+    fe = n;
+
+    ruido = 0;
+    fz = 0;
+    for n = fe:(size(M,2)-(num_segmentos_ruido-1))
+        if Z(n) > UmbCruCero
+            ruido = ruido + 1;
+            if ruido == 3
+                while Z(n) > UmbCruCero
+                    n = n-1;
+                end
+                fz = n;
+            end
+        else
+            ruido = 0;
+        end
+    end
+
+    % Dejamos solo la palabra.
+
+    if lz ~= 0
+        if fz ~= 0 
+            segmentos = segmentos(:,lz:fz);
+        else
+            segmentos = segmentos(:,lz:fe);
+        end
+    else
+        if fz ~= 0 
+            segmentos = segmentos(:,le:fz);
+        else
+            segmentos = segmentos(:,le:fe);
+        end
     end
     i = i-1;
-end
-n = Ie;
-
-cont = 0;
-while (n > Ie-25 && n > 11)   
-    
-   if Z(n) > UmbCruCero
-   cont = cont+1;    
-   else
-   cont = 0;
-   inicio = Ie;
-   end
-   
-   if cont>=3
-   inicio = n+2; 
-   n = 10; %salir del bucle
-   end
-   n = n-1;
-end
-
-
-
-
-
-
-mProm          = fliplr(mProm);
-Z              = fliplr(Z);
-Ms             = mProm(1:10);
-Zs             = Z(1:10);
-
-UmbSupEnrg     = 0.5*max(mProm);
-UmbInfEnrg     = mean(Ms) + 2*std(Ms);
-UmbCruCero     = mean(Zs) + 2*std(Zs);
-
-In = -1;
-i = 11;
-while (In == -1 && i<length(mProm))
-if mProm(i) > UmbSupEnrg
-    In = i;
-end
-i = i + 1;  
-end
-i = In;
-Ie = -1;
-while (Ie == -1 && i>0)
-    if mProm(i) < UmbInfEnrg
-    Ie = i;
-    end
-    i = i-1;
-end
-n = Ie;
-
-cont = 0;
-while (n > Ie-25 && n > 11)   
-    
-   if Z(n) > UmbCruCero
-   cont = cont+1;    
-   else
-   cont = 0;
-   fin = Ie;
-   end
-   
-   if cont>=3
-   fin = n+2; 
-   n = 10; %salir del bucle
-   end
-   n = n-1;
-end
-fin = length(Z)-fin+1;
 end
