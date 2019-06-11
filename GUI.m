@@ -22,7 +22,7 @@ function varargout = GUI(varargin)
 
 % Edit the above text to modify the response to help GUI
 
-% Last Modified by GUIDE v2.5 07-Jun-2019 16:53:26
+% Last Modified by GUIDE v2.5 11-Jun-2019 11:58:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -84,6 +84,10 @@ set(handles.commandLine, 'String', operator);
 
 % --- Executes on button press in numero.
 function numero_Callback(hObject, eventdata, handles)
+num = get(handles.commandLine, 'String');
+num = strcat(num, num2str(main_imagen()));
+
+set(handles.commandLine, 'String', strcat('\n', num));
 % hObject    handle to numero (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -91,6 +95,11 @@ function numero_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in botonIgual.
 function botonIgual_Callback(hObject, eventdata, handles)
+sNum = get(handles.commandLine,'String');
+op = {sNum};
+op = eval(op{1});
+set(handles.resultado, 'String', op);
+set(handles.commandLine, 'String', '');
 % hObject    handle to botonIgual (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
