@@ -1,8 +1,8 @@
 function sol = reconocedorOP(carac)
-    load dataBase/SUMA.mat
-    load dataBase/RESTA.mat
-    load dataBase/PRODUCTO.mat
-    load dataBase/COCIENTE.mat
+    load SUMA.mat
+    load RESTA.mat
+    load PRODUCTO.mat
+    load COCIENTE.mat
 
     diffSUMA     = dtw(carac, SUMA);
     diffRESTA    = dtw(carac, RESTA);

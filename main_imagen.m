@@ -57,7 +57,7 @@ function num = main_imagen()
 
 
     % Aquí detectamos los píxeles de la piel
-    [r,c,v] = find(Cb>=77 & Cb<=127 & Cr>=133 & Cr<=173);
+    [r,c,v] = find(Cb>=80 & Cb<=130 & Cr>=133 & Cr<=173);
     numind = size(r,1);
 
     for i=1:numind
@@ -68,6 +68,7 @@ function num = main_imagen()
     end
 
     % Rellenamos los pequeños huecos que nos hayan quedado
+    figure, imshow(BW);
     BW = imfill(BW, 'holes');
     % Eliminamos las áreas pequeñas de la imagen
     BW = bwareaopen(BW, 900);  	% 900 para las imágenes de pruebav2

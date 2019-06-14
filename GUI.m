@@ -75,8 +75,9 @@ varargout{1} = handles.output;
 
 % --- Executes on button press in operador.
 function operador_Callback(hObject, eventdata, handles)
-operator = main_sonido();
-set(handles.commandLine, 'String', operator);
+expr = get(handles.commandLine, 'String');
+expr = strcat(expr, main_sonido());
+set(handles.commandLine, 'String', expr);
 % hObject    handle to operador (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -87,7 +88,7 @@ function numero_Callback(hObject, eventdata, handles)
 num = get(handles.commandLine, 'String');
 num = strcat(num, num2str(main_imagen()));
 
-set(handles.commandLine, 'String', strcat('\n', num));
+set(handles.commandLine, 'String', num);
 % hObject    handle to numero (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
