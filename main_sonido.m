@@ -1,4 +1,5 @@
 function sol = main_sonido()
+    addpath('ASR');
     % 1) Grabamos señal
     t = 4; Fs = 11025; Ch = 1; nBits = 16;
     [grab, sound] = grabacion(t, Fs, Ch, nBits);

@@ -1,4 +1,5 @@
 function num = main_imagen()    
+    addpath('IR');
     % El usuario puede elegir si tomar una imagen o cargarla
     message = '¿Le gustaría tomar una imagen?';
     reply   = questdlg(message, 'Tomar imagen', 'Si', 'No', 'Si');

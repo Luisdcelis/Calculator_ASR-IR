@@ -1,8 +1,8 @@
 function sol = reconocedorOP(carac)
-    load dataBase/SUMA.mat
-    load dataBase/RESTA.mat
-    load dataBase/PRODUCTO.mat
-    load dataBase/COCIENTE.mat
+    load dataBase/recording/SUMA.mat
+    load dataBase/recording/RESTA.mat
+    load dataBase/recording/PRODUCTO.mat
+    load dataBase/recording/COCIENTE.mat
 
     diffSUMA     = dtw(carac, SUMA);
     diffRESTA    = dtw(carac, RESTA);
@@ -13,16 +13,12 @@ function sol = reconocedorOP(carac)
     [~, ind] = min(diferencias);
     switch ind
         case 1
-%             disp('La palabra dicha es SUMA');
             sol = '+';
         case 2
-%             disp('La palabra dicha es RESTA');
             sol = '-';
         case 3
-%             disp('La palabra dicha es PRODUCTO');
             sol = '*';
         case 4
-%             disp('La palabra dicha es COCIENTE');
             sol = '/';
     end
     
