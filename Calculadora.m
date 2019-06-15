@@ -87,8 +87,9 @@ set(handles.commandLine, 'String', expr);
 function numero_Callback(hObject, eventdata, handles)
 num = get(handles.commandLine, 'String');
 num = strcat(num, num2str(main_imagen()));
-
-set(handles.commandLine, 'String', num);
+if strcmp(num, 'errorInNum') == 0    
+    set(handles.commandLine, 'String', num);
+end
 % hObject    handle to numero (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
