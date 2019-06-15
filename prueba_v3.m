@@ -50,7 +50,7 @@ for k=1:2
 
 
     % Aquí detectamos los píxeles de la piel
-    [r,c,v] = find(Cb>=80 & Cb<=120 & Cr>=133 & Cr<=173);
+    [r,c,v] = find(Cb>=77 & Cb<=127 & Cr>=133 & Cr<=173);
     numind = size(r,1);
 
     for i=1:numind
