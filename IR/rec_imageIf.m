@@ -59,8 +59,8 @@ function num = rec_imageIf()
         img{k} = BW;
 
         % Eliminamos las áreas pequeñas de la imagen
-        BW = bwareaopen(BW, round(0.01*(height*width)));
-        se = strel('square',round(0.10*width));   
+        BW = bwareaopen(BW, round(0.0175*(height*width)));
+        se = strel('square',round(0.125*width));   
         
         % A continuación pasamos a eliminar la palma, para poder quedarnos
         % posteriormente con los dedos y pasar a contarlos
@@ -74,8 +74,9 @@ function num = rec_imageIf()
         % solamente los dedos y tal vez algo de ruido
         BW3 = imsubtract(BW, BW2);
         % Pasamos a eliminar el ruido
-        BW3 = bwareaopen(BW3, round(0.015*height*width));     
+        BW3 = bwareaopen(BW3, round(0.0175*height*width));     
         BW = BW3;
+%         figure, imshow(BW)
 
         % Obtenemos información sobre las áreas contiguas
         st = regionprops(BW, 'All');
