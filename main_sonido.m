@@ -2,7 +2,6 @@ function sol = main_sonido()
     % 1) Grabamos señal
     t = 4; Fs = 11025; Ch = 1; nBits = 16;
     [grab, sound] = grabacion(t, Fs, Ch, nBits);
-    play(sound);
 %     subplot(2,1,1), plot(grab);
     
     % 2) Detectar inicio-fin de palabra
