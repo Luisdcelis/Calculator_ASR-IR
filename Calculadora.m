@@ -46,7 +46,7 @@ end
 
 % --- Executes just before Calculadora is made visible.
 function Calculadora_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
+% This function has no output args, see OutputFc
 % hObject    handle to figure
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
