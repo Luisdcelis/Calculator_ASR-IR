@@ -15,7 +15,7 @@ function num = rec_imageIf()
     hRect2 = rectangle('Position', [imWidth-400,round(imHeight/3),400,400],...
               'EdgeColor','r','LineWidth',1 );
 
-    pause(7)
+    pause(15)
     I = getsnapshot(vid);
     delete(vid);
     
